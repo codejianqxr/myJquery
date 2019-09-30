@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+
+        //100  边框   点击  边框颜色 放入内容
+        /*
+        window.onload=function () {
+            var div=document.querySelectorAll("div");
+
+            for(var i=0;i<div.length;i++){
+                div[i].style.cssText="width:100px;height:100px;border:1px solid red";
+                div[i].onclick=function () {
+                    this.style.border="1px solid blue";
+                    this.innerHTML="aaa";
+                }
+            }
+
+
+        }
+
+
+
+        1.  $喜欢
+        2.  函数 变量   简单
+
+        $ 函数  $(函数)  $(字符串)  $(对象)
+
+        $() 放入字符串  对象  执行完的结构又是一个对象
+
+        jquery对象
+
+        1. 隐式的循环
+
+        2. 快速的查询元素 首要特性
+
+        3. 链式调用
+
+        */
+
+
+
+
+
+
+        function myJuery(selector) {
+            if (typeof selector=="string"){
+                var all=document.querySelectorAll(selector);
+                this.length=all.length;
+                for(var i=0;i<this.length;i++){
+                    this[i]=all[i]
+                }
+            }else if(typeof selector=="function"){
+                this.ready(selector)
+            }else if(selector.nodeType==1){
+
+                this[0]=selector;
+                this.length=1
+
+
+            }
+        }
+        myJuery.prototype={
+
+            each:function (callback) {
+                for(var i=0;i<this.length;i++) {
+                    callback(i,this[i])
+                }
+            },
+            ready:function (callback) {
+                window.onload=function () {
+                    callback()
+                }
+            },
+            css:function () {
+                var args=arguments
+                var that=this;
+                this.each( function(index,obj) {
+                    if(args.length==2){
+                        that.checkPx(args[0],args[1],obj)
+                    }else if(args.length==1){
+                        for(var i in args[0]){
+                            that.checkPx(i,args[0][i],obj)
+                        }
+                    }
+                })
+                return this;
+
+            },
+            html(con){
+                this.each(function (index,obj) {
+                   obj.innerHTML=con
+                })
+                return this;
+            },
+            checkPx:function (attr,val,obj) {
+                if(attr=="width" || attr=="height" || attr=="padding"||attr=="margin"){
+
+                    obj.style[attr]=parseInt(val)+"px"
+
+                }else {
+                    obj.style[attr]=val;
+                }
+            },
+            click:function (callback) {
+                this.each(function (index,obj) {
+                    obj.onclick=function () {
+                        callback.call(obj)
+                    }
+                })
+                return this;
+            },
+            mousedown:function (callback) {
+                this.each(function (index,obj) {
+                    obj.onmousedown=function () {
+                        callback.call(obj)
+                    }
+                })
+                return this;
+            }
+        }
+        
+        function $(selector) {
+            return new myJuery(selector);
+        }
+
+
+        $(function () {
+            $("div").html("aaa").css({
+                width:200,
+                height:"200px",
+                border:"1px solid red"
+            }).click(function () {
+                console.log("click")
+            }).mousedown(function () {
+                console.log("down")
+            })
+        })
+
+
+        
+
+
+
+
+
+
+        // $(function () {
+        //     $("div").css({
+        //         width:100,height:100,border:"1px solid red"
+        //     }).click(function () {
+        //         $(this).css("border","1px solid blue").html("aaa")
+        //     })
+        // })
+
+    </script>
+
+</head>
+<body>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+
+</body>
+</html>
