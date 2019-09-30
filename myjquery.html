@@ -50,10 +50,18 @@
 
         function myJuery(selector) {
             if (typeof selector=="string"){
-                var all=document.querySelectorAll(selector);
-                this.length=all.length;
-                for(var i=0;i<this.length;i++){
-                    this[i]=all[i]
+                if(selector.charAt(0)=="<"){
+
+                    var ele=document.createElement(selector.slice(1,-1));
+                    this[0]=ele;
+                    this.length=1
+
+                }else {
+                    var all = document.querySelectorAll(selector);
+                    this.length = all.length;
+                    for (var i = 0; i < this.length; i++) {
+                        this[i] = all[i]
+                    }
                 }
             }else if(typeof selector=="function"){
                 this.ready(selector)
@@ -71,6 +79,10 @@
                 for(var i=0;i<this.length;i++) {
                     callback(i,this[i])
                 }
+            },
+            appendTo:function (parent) {
+                parent.appendChild(this[0]);
+                return this;
             },
             ready:function (callback) {
                 window.onload=function () {
@@ -129,17 +141,17 @@
             return new myJuery(selector);
         }
 
+        window.jQuery=$;
 
-        $(function () {
-            $("div").html("aaa").css({
-                width:200,
-                height:"200px",
-                border:"1px solid red"
-            }).click(function () {
-                console.log("click")
-            }).mousedown(function () {
-                console.log("down")
+
+        //  函数  字符串   dom对象
+        jQuery(function () {
+            $("<div>").appendTo(document.body).css({
+                width:200,height:200,background:"red"
+            }).html("div").click(function () {
+                $(this).css("height",300)
             })
+
         })
 
 
